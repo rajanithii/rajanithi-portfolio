@@ -1,7 +1,7 @@
 import { Fragment, useLayoutEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { projects, pad } from '../../data/projects';
-import { buildProjectTimeline } from '../../animations/projectAnimations';
+import { buildMobileProjectTimeline, buildProjectTimeline } from '../../animations/projectAnimations';
 import { PINNED_QUERY } from '../../animations/scrollAnimations';
 import FlowVisual from './FlowVisual';
 import ChartVisual from './ChartVisual';
@@ -25,6 +25,9 @@ export default function ProjectSection({ project: name, onOpenCaseStudy }) {
     const mm = gsap.matchMedia();
     mm.add(PINNED_QUERY, () => {
       buildProjectTimeline(ref.current, { hasNext });
+    });
+    mm.add('(max-width: 1023px) and (prefers-reduced-motion: no-preference)', () => {
+      buildMobileProjectTimeline(ref.current);
     });
     return () => mm.revert();
   }, [hasNext]);
@@ -57,11 +60,11 @@ export default function ProjectSection({ project: name, onOpenCaseStudy }) {
             <div className="project__body">
               <div data-desc>
                 {p.statement && (
-                  <p className="project__statement">
+                  <p className="project__statement" data-statement>
                     <Br lines={p.statement} />
                   </p>
                 )}
-                <p className="project__desc">{p.description}</p>
+                <p className="project__desc" data-description>{p.description}</p>
               </div>
               <button
                 type="button"
@@ -85,10 +88,21 @@ export default function ProjectSection({ project: name, onOpenCaseStudy }) {
 
           <div className="project__visual">
             {visual.type === 'flow' && <FlowVisual layers={visual.layers} label={visual.label} />}
-            {visual.type === 'chart' && <ChartVisual points={visual.points} label={visual.label} />}
+            {visual.type === 'chart' && (
+              <ChartVisual
+                points={visual.points}
+                label={visual.label}
+                unit={visual.unit}
+                unitSpoken={visual.unitSpoken}
+                valueLabel={visual.valueLabel}
+                yAxisLabel={visual.yAxisLabel}
+              />
+            )}
             <p className="meta project__caption" data-caption>
               {visual.caption}
               {visual.placeholder && ' — ILLUSTRATIVE SHAPE, REAL DATA TO BE ADDED'}
+              {visual.methodology && <span className="project__methodology">{visual.methodology}</span>}
+              {visual.methodologyNote && <span className="project__methodology">{visual.methodologyNote}</span>}
             </p>
           </div>
         </div>

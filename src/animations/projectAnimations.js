@@ -20,10 +20,10 @@ export function buildProjectTimeline(section, { hasNext }) {
   const content = section.querySelector('.project__inner');
   const transition = section.querySelector('[data-transition]');
 
-  gsap.set(nodes, { opacity: 0, y: 16 });
-  gsap.set(links, { scaleY: 0, transformOrigin: 'top center' });
-  gsap.set(grid, { scaleX: 0, transformOrigin: 'left center' });
-  gsap.set(points, { opacity: 0 });
+  if (nodes.length) gsap.set(nodes, { opacity: 0, y: 16 });
+  if (links.length) gsap.set(links, { scaleY: 0, transformOrigin: 'top center' });
+  if (grid.length) gsap.set(grid, { scaleX: 0, transformOrigin: 'left center' });
+  if (points.length) gsap.set(points, { opacity: 0 });
   if (line) gsap.set(line, { strokeDashoffset: 1 });
   gsap.set(tech, { opacity: 0, y: 12 });
   gsap.set([desc, cta, caption].filter(Boolean), { opacity: 0, y: 16 });
@@ -35,12 +35,12 @@ export function buildProjectTimeline(section, { hasNext }) {
   });
 
   if (caption) tl.to(caption, { opacity: 1, y: 0, duration: 0.5 }, 1);
-  tl.to(grid, { scaleX: 1, duration: 0.5, stagger: { amount: 0.5 } }, 1);
-  tl.to(nodes, { opacity: 1, y: 0, duration: 0.3, stagger: { amount: 0.7 } }, 1);
-  tl.to(links, { scaleY: 1, duration: 0.3, stagger: { amount: 0.7 } }, 2);
-  tl.to(nodes, { borderColor: 'rgba(255,255,255,0.95)', duration: 0.2, stagger: { amount: 0.8 } }, 2.1);
+  if (grid.length) tl.to(grid, { scaleX: 1, duration: 0.5, stagger: { amount: 0.5 } }, 1);
+  if (nodes.length) tl.to(nodes, { opacity: 1, y: 0, duration: 0.3, stagger: { amount: 0.7 } }, 1);
+  if (links.length) tl.to(links, { scaleY: 1, duration: 0.3, stagger: { amount: 0.7 } }, 2);
+  if (nodes.length) tl.to(nodes, { borderColor: 'rgba(255,255,255,0.95)', duration: 0.2, stagger: { amount: 0.8 } }, 2.1);
   if (line) tl.to(line, { strokeDashoffset: 0, duration: 1 }, 2);
-  tl.to(points, { opacity: 1, duration: 0.2, stagger: { amount: 0.5 } }, 2.7);
+  if (points.length) tl.to(points, { opacity: 1, duration: 0.2, stagger: { amount: 0.5 } }, 2.7);
   tl.to(tech, { opacity: 1, y: 0, duration: 0.3, stagger: { amount: 0.7 } }, 3);
   if (desc) tl.to(desc, { opacity: 1, y: 0, duration: 0.6 }, 4);
   if (cta) tl.to(cta, { opacity: 1, y: 0, duration: 0.6 }, 5);
@@ -52,5 +52,65 @@ export function buildProjectTimeline(section, { hasNext }) {
   } else {
     tl.to({}, { duration: 1 }, 6);
   }
+  return tl;
+}
+
+// Mobile projects stay in normal document flow; content reveals as the reader scrolls.
+export function buildMobileProjectTimeline(section) {
+  const meta = section.querySelector('.project__meta');
+  const title = section.querySelector('.project__title');
+  const subtitle = section.querySelector('.project__subtitle');
+  const visual = section.querySelector('.project__visual');
+  const caption = section.querySelector('.project__caption');
+  const nodes = gsap.utils.toArray(section.querySelectorAll('[data-node]'));
+  const links = gsap.utils.toArray(section.querySelectorAll('[data-link]'));
+  const grid = gsap.utils.toArray(section.querySelectorAll('[data-grid]'));
+  const points = gsap.utils.toArray(section.querySelectorAll('[data-point]'));
+  const line = section.querySelector('[data-chart-line]');
+  const statement = section.querySelector('[data-statement]');
+  const description = section.querySelector('[data-description]');
+  const tech = gsap.utils.toArray(section.querySelectorAll('[data-tech]'));
+  const cta = section.querySelector('[data-cta]');
+  const steps = [meta, title, subtitle, visual, caption, statement, description, ...tech, cta].filter(Boolean);
+
+  gsap.set(steps, { autoAlpha: 0, y: 14 });
+  if (nodes.length) gsap.set(nodes, { autoAlpha: 0, y: 12 });
+  if (links.length) gsap.set(links, { scaleY: 0, transformOrigin: 'top center' });
+  if (grid.length) gsap.set(grid, { autoAlpha: 0 });
+  if (points.length) gsap.set(points, { autoAlpha: 0 });
+  if (line) gsap.set(line, { strokeDashoffset: 1 });
+
+  const tl = gsap.timeline({
+    defaults: { ease: 'none' },
+    scrollTrigger: {
+      trigger: section,
+      start: 'top 82%',
+      end: 'bottom 18%',
+      scrub: 0.45,
+    },
+  });
+
+  [meta, title, subtitle].filter(Boolean).forEach((el) => {
+    tl.to(el, { autoAlpha: 1, y: 0, duration: 0.55 });
+  });
+  if (visual) tl.to(visual, { autoAlpha: 1, y: 0, duration: 0.45 });
+
+  if (line) {
+    tl.to(grid, { autoAlpha: 1, duration: 0.35 });
+    tl.to(line, { strokeDashoffset: 0, duration: 1 });
+    tl.to(points, { autoAlpha: 1, duration: 0.2, stagger: 0.08 });
+  } else {
+    nodes.forEach((node, index) => {
+      tl.to(node, { autoAlpha: 1, y: 0, duration: 0.3 });
+      if (links[index]) tl.to(links[index], { scaleY: 1, duration: 0.25 });
+    });
+  }
+
+  if (caption) tl.to(caption, { autoAlpha: 1, y: 0, duration: 0.35 });
+  tl.to(tech, { autoAlpha: 1, y: 0, duration: 0.25, stagger: 0.08 });
+  if (statement) tl.to(statement, { autoAlpha: 1, y: 0, duration: 0.5 });
+  if (description) tl.to(description, { autoAlpha: 1, y: 0, duration: 0.5 });
+  if (cta) tl.to(cta, { autoAlpha: 1, y: 0, duration: 0.4 });
+
   return tl;
 }

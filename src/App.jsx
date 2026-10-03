@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import useLenis from './hooks/useLenis';
 import useCursor from './hooks/useCursor';
@@ -23,9 +23,14 @@ export default function App() {
   const [ready, setReady] = useState(false);
   const [caseId, setCaseId] = useState(null);
   const cursorRef = useRef(null);
+  const contentRef = useRef(null);
 
   useLenis(ready);
   useCursor(cursorRef);
+
+  useLayoutEffect(() => {
+    if (contentRef.current) contentRef.current.inert = !ready;
+  }, [ready]);
 
   useEffect(() => {
     document.documentElement.classList.toggle('is-loading', !ready);
@@ -43,29 +48,31 @@ export default function App() {
 
   return (
     <>
-      <a className="skip" href="#main">Skip to content</a>
       <Loader onReveal={() => setReady(true)} />
-      <Navbar ready={ready} />
+      <div ref={contentRef} aria-hidden={!ready}>
+        <a className="skip" href="#main">Skip to content</a>
+        <Navbar ready={ready} />
 
-      <main id="main" tabIndex={-1}>
-        <Hero ready={ready} />
-        <Intro />
-        <WorkIntro />
-        <ProjectSection project="CareConnect" onOpenCaseStudy={setCaseId} />
-        <ProjectSection project="ClimatePulse" onOpenCaseStudy={setCaseId} />
-        <ProjectSection project="CropSure AI" onOpenCaseStudy={setCaseId} />
-        <Technologies />
-        <About />
-        <Education />
-        <Achievements />
-        <Contact />
-      </main>
+        <main id="main" tabIndex={-1}>
+          <Hero ready={ready} />
+          <Intro />
+          <WorkIntro />
+          <ProjectSection project="CareConnect" onOpenCaseStudy={setCaseId} />
+          <ProjectSection project="ClimatePulse" onOpenCaseStudy={setCaseId} />
+          <ProjectSection project="CropSure AI" onOpenCaseStudy={setCaseId} />
+          <Technologies />
+          <About />
+          <Education />
+          <Achievements />
+          <Contact />
+        </main>
 
-      <Footer />
-      <ProjectNav />
-      {openProject && <ProjectCaseStudy project={openProject} onClose={() => setCaseId(null)} />}
-      <div className="cursor" ref={cursorRef} aria-hidden="true">
-        <span className="cursor__label" />
+        <Footer />
+        <ProjectNav />
+        {openProject && <ProjectCaseStudy project={openProject} onClose={() => setCaseId(null)} />}
+        <div className="cursor" ref={cursorRef} aria-hidden="true">
+          <span className="cursor__label" />
+        </div>
       </div>
     </>
   );

@@ -103,14 +103,32 @@ export default function ProjectCaseStudy({ project: p, onClose }) {
           </section>
         </div>
 
-        <div className="case__foot">
-          {cs.github ? (
-            <SmartLink href={cs.github} className="cta" data-cursor="link">
-              GITHUB <span aria-hidden="true">→</span>
-            </SmartLink>
-          ) : (
-            <p className="case__todo">Repository link to be added.</p>
-          )}
+        <div className="case__foot" aria-labelledby="case-proof-title">
+          <h3 className="meta case__proof-title" id="case-proof-title">PROJECT PROOF</h3>
+          <div className="case__proof-links">
+            {cs.demo && (
+              <SmartLink
+                href={cs.demo}
+                className="cta"
+                data-cursor="link"
+                aria-label={`${p.name} live demo (opens in a new tab)`}
+              >
+                LIVE DEMO <span aria-hidden="true">↗</span>
+              </SmartLink>
+            )}
+            {cs.github ? (
+              <SmartLink
+                href={cs.github}
+                className="cta"
+                data-cursor="link"
+                aria-label={`${p.name} source repository (opens in a new tab)`}
+              >
+                SOURCE / GITHUB <span aria-hidden="true">↗</span>
+              </SmartLink>
+            ) : (
+              <p className="case__todo">Repository link to be added.</p>
+            )}
+          </div>
         </div>
       </div>
     </div>

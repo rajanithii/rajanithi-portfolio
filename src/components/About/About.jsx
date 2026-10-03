@@ -7,8 +7,7 @@ export default function About() {
         </h2>
         <div className="about__body">
           <p className="lead about__lead" data-fade>
-            I&apos;m Rajanithi, an Artificial Intelligence and Data Science student interested in building practical
-            software, working with data, and exploring AI-driven solutions.
+            I&apos;m Rajanithi, studying Artificial Intelligence and Data Science at Dhanalakshmi Srinivasan University.
           </p>
           <dl className="about__facts" data-stagger>
             <div>
@@ -29,7 +28,7 @@ export default function About() {
             </div>
             <div>
               <dt className="meta">FOCUS</dt>
-              <dd>AI / Data / Software</dd>
+              <dd>Software · Data · Applied AI</dd>
             </div>
             <div>
               <dt className="meta">CURRENTLY LEARNING</dt>

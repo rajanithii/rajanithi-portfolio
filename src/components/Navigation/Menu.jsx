@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { scrollToTarget } from '../../hooks/useLenis';
 import { profile } from '../../data/profile';
 import SmartLink from '../common/SmartLink';
@@ -10,10 +11,30 @@ const MAIN = [
 
 // Fullscreen mobile menu. Hidden (visibility) when closed so it is never focusable.
 export default function Menu({ open, onClose }) {
+  const navigateTimer = useRef(null);
+
+  useEffect(() => {
+    if (open && navigateTimer.current) {
+      clearTimeout(navigateTimer.current);
+      navigateTimer.current = null;
+    }
+  }, [open]);
+
+  useEffect(
+    () => () => {
+      if (navigateTimer.current) clearTimeout(navigateTimer.current);
+    },
+    []
+  );
+
   const go = (e, href) => {
     e.preventDefault();
     onClose();
-    setTimeout(() => scrollToTarget(href), 60);
+    const delay = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 460;
+    navigateTimer.current = setTimeout(() => {
+      navigateTimer.current = null;
+      scrollToTarget(href);
+    }, delay);
   };
   return (
     <div id="menu" className={`menu ${open ? 'is-open' : ''}`} aria-hidden={!open}>

@@ -44,7 +44,8 @@ export function scrollToTarget(target) {
   const el = typeof target === 'string' ? document.querySelector(target) : target;
   const l = window.__lenis;
   if (l) {
-    l.scrollTo(typeof target === 'number' ? target : el, { duration: 1.4, force: true });
+    const duration = window.matchMedia('(max-width: 767px)').matches ? 0.8 : 1.4;
+    l.scrollTo(typeof target === 'number' ? target : el, { duration, force: true });
     return;
   }
   if (typeof target === 'number') window.scrollTo(0, target);

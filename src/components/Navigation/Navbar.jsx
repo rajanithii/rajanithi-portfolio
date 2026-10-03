@@ -27,7 +27,7 @@ export default function Navbar({ ready }) {
 
   return (
     <>
-      <header className={`nav ${ready ? 'is-ready' : ''}`}>
+      <header className={`nav ${ready ? 'is-ready' : ''}`} aria-hidden={!ready}>
         <a className="nav__logo" href="#top" onClick={(e) => go(e, '#main')}>
           RAJANITHI N
         </a>

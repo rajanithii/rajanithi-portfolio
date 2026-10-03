@@ -189,6 +189,7 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
 .project__tech { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; margin-top: auto; padding-top: 1rem; }
 .project__visual { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem; padding-block: 2rem; }
 .project__caption { text-align: center; max-width: 24em; }
+.project__methodology { display: block; margin-top: 0.45rem; font-size: 0.72rem; line-height: 1.5; letter-spacing: 0.02em; text-transform: none; color: var(--muted); }
 .project__transition { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--font-display); font-size: clamp(1rem, 1.4vw, 1.25rem); letter-spacing: 0.3em; color: #888; opacity: 0; pointer-events: none; }
 @media (min-width: 1024px) {
   .project__inner { grid-template-columns: 7fr 5fr; gap: 4vw; }
@@ -210,6 +211,9 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
 .chart { position: relative; width: 100%; max-width: 640px; aspect-ratio: 800 / 420; }
 .chart svg { width: 100%; height: 100%; display: block; overflow: visible; }
 .chart__grid { stroke: rgba(255, 255, 255, 0.15); stroke-width: 1; }
+.chart__axis-title, .chart__tick { fill: currentColor; font-family: var(--font-body); font-size: 24px; }
+.chart__axis-title { letter-spacing: 0.02em; }
+.chart__tick { fill: var(--muted, #888); font-size: 28px; font-variant-numeric: tabular-nums; }
 .chart__line { fill: none; stroke: #fff; stroke-width: 2.5; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
 .chart__hit { fill: transparent; }
 .chart__dot { fill: #fff; transition: r 0.25s; }
@@ -238,12 +242,25 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
 /* case study overlay */
 .case { position: fixed; inset: 0; z-index: 150; overflow-y: auto; overscroll-behavior: contain; }
 .case__inner { padding: 3vh var(--pad-x) 8vh; max-width: 1600px; margin: 0 auto; }
-.case__top { display: flex; justify-content: space-between; align-items: center; margin-bottom: clamp(2rem, 8vh, 5rem); }
+.case__top {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: -3vh calc(-1 * var(--pad-x)) clamp(2rem, 8vh, 5rem);
+  padding: calc(3vh + env(safe-area-inset-top)) var(--pad-x) 0;
+  background: var(--off);
+}
 .case__close { width: 48px; height: 48px; display: grid; place-items: center; margin-right: -12px; }
 .case__rows { margin-top: clamp(2rem, 8vh, 5rem); border-top: 1px solid var(--line); }
 .case__row { display: grid; gap: 0.75rem; padding: clamp(1.25rem, 3vh, 2rem) 0; border-bottom: 1px solid var(--line); }
 .case__todo { color: var(--muted); font-size: 0.9375rem; }
 .case__foot { padding-top: 2.5rem; }
+.case__proof-title { margin-bottom: 0.75rem; }
+.case__proof-links { display: flex; flex-wrap: wrap; gap: 0.75rem 2rem; }
+.case__proof-links .cta { min-height: 44px; }
 @media (min-width: 768px) { .case__row { grid-template-columns: 3fr 9fr; } }
 
 /* ───────────── TECHNOLOGIES ───────────── */
@@ -252,11 +269,11 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
 .tech__group { display: grid; gap: 1rem; padding: clamp(1.5rem, 4vh, 2.5rem) 0; border-top: 1px solid var(--line); }
 .tech__list { display: flex; flex-wrap: wrap; gap: 0.25rem 2.5rem; }
 .tech__item { position: relative; display: block; text-align: left; padding-bottom: 1.6em; }
+.tech__item--static { cursor: default; }
 .tech__name { display: block; font-family: var(--font-display); font-weight: 500; text-transform: uppercase; letter-spacing: -0.03em; line-height: 1.05; font-size: clamp(1.75rem, 3.6vw, 3.5rem); transition: color 0.3s; }
 .tech__rel { position: absolute; left: 0; bottom: 0; white-space: nowrap; opacity: 0; transform: translateY(4px); transition: opacity 0.3s, transform 0.4s var(--ease); }
 .tech__item:hover .tech__rel, .tech__item:focus-visible .tech__rel, .tech__item.is-open .tech__rel { opacity: 1; transform: none; color: #fff; }
 @media (hover: hover) { .tech__list:hover .tech__name { color: #666; } .tech__list:hover .tech__item:hover .tech__name { color: #fff; } }
-@media (hover: none) { .tech__rel { opacity: 1; transform: none; } }
 @media (min-width: 768px) { .tech__group { grid-template-columns: 3fr 9fr; } }
 
 /* ───────────── ABOUT ───────────── */
@@ -287,6 +304,9 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
 
 /* ───────────── ACHIEVEMENTS ───────────── */
 .ach__list { margin-top: clamp(3rem, 8vh, 5rem); }
+.ach__group + .ach__group { margin-top: clamp(3rem, 8vh, 5rem); }
+.ach__group-title { padding-bottom: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.15); }
+.ach__group .ach__list { margin-top: 0; }
 .ach__row { position: relative; display: grid; gap: 0.75rem; padding: clamp(1.5rem, 4vh, 2.5rem) 0; }
 .ach__rule { position: absolute; left: 0; right: 0; top: 0; height: 1px; background: rgba(255, 255, 255, 0.15); }
 .ach__mark { font-family: var(--font-display); font-weight: 500; text-transform: uppercase; letter-spacing: -0.04em; line-height: 0.95; font-size: clamp(2.5rem, 7vw, 7rem); }
@@ -295,6 +315,14 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
 .ach__text .meta { margin-top: 0.5rem; display: block; }
 @media (min-width: 768px) {
   .ach__row { grid-template-columns: 2fr 5fr 5fr; align-items: end; column-gap: 2vw; }
+}
+.certs { margin-top: clamp(5rem, 12vh, 8rem); }
+.certs__list { margin-top: clamp(2rem, 6vh, 4rem); }
+.certs__row { position: relative; display: grid; gap: 1rem; padding: clamp(1.5rem, 4vh, 2.5rem) 0; }
+.certs__number { align-self: center; }
+.certs__row .cta { justify-self: start; }
+@media (min-width: 768px) {
+  .certs__row { grid-template-columns: 1fr 5fr auto; align-items: center; column-gap: 2vw; }
 }
 
 /* ───────────── CONTACT ───────────── */
@@ -330,6 +358,61 @@ html.has-cursor, html.has-cursor * { cursor: none !important; }
   .footer__row { grid-template-columns: 1fr auto 1fr; align-items: start; }
   .footer__row > :last-child { text-align: right; }
   .footer__top { justify-self: end; }
+}
+
+/* ───────────── MOBILE COMPOSITION ───────────── */
+@media (max-width: 767px) {
+  .menu {
+    padding-top: max(7rem, 15svh);
+    transition: clip-path 0.45s var(--ease), visibility 0s 0.45s;
+  }
+  .menu.is-open { transition: clip-path 0.45s var(--ease); }
+  .menu li { transform: translateY(16px); }
+
+  .hero { padding-top: max(6.5rem, 12svh); padding-bottom: max(2rem, 5svh); }
+  .hero__title { font-size: clamp(3.25rem, min(19vw, 12vh), 5.5rem); }
+  .hero__bottom { gap: 1rem; }
+  .hero__lead { font-size: clamp(1rem, 4.5vw, 1.2rem); }
+  .hero__scroll-line { width: 42px; }
+
+  .intro.theme-light { padding-top: clamp(5rem, 14svh, 7rem); padding-bottom: clamp(5rem, 14svh, 7rem); }
+  .intro__title { font-size: clamp(3rem, 15vw, 5.5rem); }
+  .workintro { min-height: 88svh; }
+  .workintro .display { font-size: clamp(2.75rem, 13vw, 5rem); }
+
+  .project { padding: 7rem var(--pad-x) 5rem; }
+  .project__inner { gap: 2rem; }
+  .project__text, .project__body { display: contents; }
+  .project__meta { order: 1; }
+  .project__title { order: 2; }
+  .project__subtitle { order: 3; }
+  .project__visual { order: 4; }
+  .project__tech { order: 5; }
+  .project__body [data-desc] { order: 6; }
+  .project__body [data-cta] { order: 7; justify-self: start; }
+  .project__title { font-size: clamp(3rem, 14.5vw, 5rem); }
+  .project__subtitle { font-size: clamp(1.05rem, 4.5vw, 1.25rem); }
+  .project__statement { font-size: clamp(1.75rem, 8vw, 2.5rem); }
+  .project__visual { padding-block: 0.75rem; gap: 1rem; min-width: 0; }
+  .project__tech { gap: 0.5rem 1rem; }
+  .project__transition { display: none; }
+
+  .flow { width: 100%; }
+  .flow__layer { gap: 8px; }
+  .flow__node { min-width: 0; max-width: 100%; padding-inline: 0.75rem; font-size: 0.72rem; letter-spacing: 0.1em; }
+  .chart { max-width: 100%; }
+  .pnav__count { bottom: max(1rem, env(safe-area-inset-bottom)); }
+
+  .tech__name { font-size: clamp(1.7rem, 8vw, 2.5rem); }
+  .about__lead { font-size: clamp(1.2rem, 5vw, 1.65rem); }
+  .contact { padding-top: max(6.5rem, 12svh); padding-bottom: max(2.5rem, 6svh); }
+  .contact__big { font-size: clamp(3.25rem, 16vw, 6rem); }
+  .contact__links { gap: 1rem 1.5rem; }
+
+  .cta:active, .contact__link:active, .footer__links a:active {
+    opacity: 0.65;
+    transform: translateY(1px);
+  }
 }
 
 /* ───────────── REDUCED MOTION ───────────── */

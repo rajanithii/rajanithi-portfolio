@@ -10,13 +10,7 @@ export default function WorkIntro() {
       </div>
       <Lines as="h2" id="work-title" className="display display--md" lines={['SYSTEMS.', 'DATA.', 'INTELLIGENCE.']} />
       <p className="lead workintro__lead" data-fade>
-        Three projects.
-        <br />
-        Three different problems.
-        <br />
-        One direction —
-        <br />
-        building with technology.
+        From emergency coordination to climate datasets and claim review.
       </p>
     </section>
   );

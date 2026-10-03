@@ -22,15 +22,21 @@ export default function Technologies() {
                 const key = `${g.id}-${item}`;
                 return (
                   <li key={key}>
-                    <button
-                      type="button"
-                      className={`tech__item ${open === key ? 'is-open' : ''}`}
-                      aria-expanded={used.length ? open === key : undefined}
-                      onClick={() => setOpen(open === key ? null : key)}
-                    >
-                      <span className="tech__name">{item}</span>
-                      {used.length > 0 && <span className="tech__rel meta">{used.join(' / ')}</span>}
-                    </button>
+                    {used.length ? (
+                      <button
+                        type="button"
+                        className={`tech__item ${open === key ? 'is-open' : ''}`}
+                        aria-expanded={open === key}
+                        onClick={() => setOpen(open === key ? null : key)}
+                      >
+                        <span className="tech__name">{item}</span>
+                        <span className="tech__rel meta">{used.join(' / ')}</span>
+                      </button>
+                    ) : (
+                      <span className="tech__item tech__item--static">
+                        <span className="tech__name">{item}</span>
+                      </span>
+                    )}
                   </li>
                 );
               })}

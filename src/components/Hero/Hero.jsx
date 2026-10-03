@@ -37,11 +37,9 @@ export default function Hero({ ready }) {
       </h1>
       <div className="hero__bottom">
         <div data-hero-fade>
-          <p className="meta hero__role">DEVELOPER / BUILDER</p>
+          <p className="meta hero__role">SOFTWARE · DATA · APPLIED AI</p>
           <p className="hero__lead">
-            Building practical systems
-            <br />
-            with software, data and AI.
+            Building tools for complex workflows.
           </p>
         </div>
         <div className="hero__scroll" data-hero-fade aria-hidden="true">
